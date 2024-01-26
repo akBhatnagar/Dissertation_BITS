@@ -41,9 +41,9 @@ function Footer() {
       <footer>
         <div class="footer-content">
           <div class="social-icons">
-            <a href="https://www.facebook.com"><img src={facebook} alt="Facebook"></img></a>
-            <a href="https://www.twitter.com"><img src={twitter} alt="Twitter"></img></a>
-            <a href="akshaybhatnagar1998@gmail.com"><img src={gmail} alt="Email"></img></a>
+            <a href="https://www.facebook.com/aksh1902/"><img src={facebook} alt="Facebook"></img></a>
+            <a href="https://twitter.com/coder_akshay"><img src={twitter} alt="Twitter"></img></a>
+            <a href="mailto:akshaybhatnagar1998@gmail.com"><img src={gmail} alt="Email"></img></a>
           </div>
         </div>
       </footer>
