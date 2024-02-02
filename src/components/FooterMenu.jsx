@@ -4,7 +4,7 @@ import { facebookUrl, twitterUrl, linkedinUrl, gmailUrl } from '../Constants.js'
 
 const FooterMenu = () => {
   return (
-    <div className="bg-gray-400 py-4 fixed bottom-0 left-0 right-0">
+    <div className="bg-gray-400 py-2 fixed bottom-0 left-0 right-0 bg-opacity-40">
       <div className="flex flex-col items-center">
         <div className="flex items-center space-x-4 mb-4">
           <span>&copy; 2024 Expense Management System</span>

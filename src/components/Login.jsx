@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { ImFacebook2 } from "react-icons/im";
 import { FaGoogle } from "react-icons/fa";
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Dashboard from '../components/Dashboard'
+import bgImage from '../assets/bg-image.jpg';
 
 async function loginUser(credentials) {
 
@@ -26,6 +27,7 @@ export default function Login() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [token, setToken] = useState();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     function validateForm() {
         return email.length > 0 && password.length > 0;
@@ -49,10 +51,12 @@ export default function Login() {
             window.localStorage.setItem("auth_token", res.token);
             document.location.reload();
             setToken(res.token);
+            setIsLoggedIn(true);
       };
     }
   return (
     <div className='relative w-full h-screen bg-zinc-900/70'>
+        <img className='absolute w-full h-full object-cover mix-blend-overlay bg-center' src={bgImage} alt="/" />
         <div className='flex justify-center items-center h-full '>
             <form className='max-w-[400px] w-full mx-auto bg-white bg-opacity-90 p-8 shadow-sm' onSubmit={handleSubmit}>
                 <h2 className='text-3xl font-bold text-center py-4'> Sign in to your account </h2>
