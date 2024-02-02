@@ -152,3 +152,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 >>>>>>> e4e54b0 (Initialize project using Create React App)
+package-lock.json
