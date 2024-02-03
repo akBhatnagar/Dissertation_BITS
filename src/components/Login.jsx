@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { ImFacebook2 } from "react-icons/im";
 import { FaGoogle } from "react-icons/fa";
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import bgImage from '../assets/bg-image.jpg';
+import bgImage from '../assets/images/bg-image.jpg';
 
 async function loginUser(credentials) {
 
@@ -29,10 +28,6 @@ export default function Login() {
     const [token, setToken] = useState();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     
-    function validateForm() {
-        return email.length > 0 && password.length > 0;
-    }
-    
     const handleSubmit = async e => {
         e.preventDefault();
         const res = await loginUser({
@@ -49,6 +44,7 @@ export default function Login() {
 
         if (res.token !== undefined) {
             window.localStorage.setItem("auth_token", res.token);
+            window.localStorage.setItem("email", email);
             document.location.reload();
             setToken(res.token);
             setIsLoggedIn(true);

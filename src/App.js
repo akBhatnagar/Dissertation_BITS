@@ -1,15 +1,13 @@
 import Views from './Views';
-import FooterMenu from './components/FooterMenu';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import bgImage from './assets/bg-image.jpg'
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
-      <div className='App'>
-        <BrowserRouter>
-          <Views />
-        </BrowserRouter>
-      </div>
+    <div className='App'>
+      <BrowserRouter>
+        <Views />
+      </BrowserRouter>
+    </div>
   );
 }
 

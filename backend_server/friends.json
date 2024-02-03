@@ -1,0 +1,6 @@
+{
+    "akshay@admin.com": ["Adarsh", "Unnati", "Sachin"],
+    "unnati@admin.com": ["Akshay", "Mahima"],
+    "admin@admin.com": ["Akshay", "Unnati", "Sachin", "Adarsh"],
+    "user@admin.com": ["Akshay", "Unnati"]
+}

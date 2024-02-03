@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const users = require('./users.json');
+const friends = require('./friends.json');
 app.use(cors())
 app.use(express.json());
 
@@ -9,8 +11,21 @@ app.use('/login', (req, res) => {
   if (!req.body || !req.body.email || !req.body.password){
     return res.status(401).send({error: 'Missing email or password'});
   }
-  const emailIsValid = req.body.email === "akshay@admin.com";
-  const passwordIsValid = req.body.password === "admin";
+
+app.use('/getFriends', (req, res) => {
+  console.log("Fetching list of friends for the user: " + req.body.email);
+  let friendList = friends[req.body.email];
+  if (!friendList) friendList = [];
+  return res.status(200).send({friendList: friendList});
+});
+
+
+  const emailIsValid = users[req.body.email] !== undefined;
+  const passwordIsValid = users[req.body.email] === req.body.password;
+ 
+  // const emailIsValid = req.body.email === "akshay@admin.com";
+  // const passwordIsValid = req.body.password === "admin";
+
   // Simple authentication based on a hardcoded email and password of the user
   if (emailIsValid && passwordIsValid){
     let token = Math.random().toString(36).substr(-8);

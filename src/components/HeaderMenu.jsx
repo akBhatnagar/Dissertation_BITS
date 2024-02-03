@@ -1,8 +1,10 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import 'tailwindcss/tailwind.css';
+// import handleSignOut, { checkIfUserLoggedIn } from '../utils/UserAuthenticator';
 
 const HeaderMenu = () => {
+  
   return (
     <div className="bg-gray-300 z-50 fixed top-0 left-0 right-0 bg-opacity-40">
       <nav className="flex items-center justify-between px-4 py-2">
@@ -31,9 +33,14 @@ const HeaderMenu = () => {
           </ul>
         </div>
         <div className="flex items-center">
+          {/* {checkIfUserLoggedIn() ? */}
           <button className="bg-gray-800 text-white px-4 py-2 ml-4 rounded-lg hover:bg-gray-700 transition duration-300">
             Sign out
           </button>
+          {/* : */}
+          {/* <button className="bg-gray-800 text-white px-4 py-2 ml-4 rounded-lg hover:bg-gray-700 transition duration-300"> */}
+          {/* Sign in */}
+        {/* </button>} */}
         </div>
       </nav>
     </div>

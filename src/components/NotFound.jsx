@@ -1,6 +1,6 @@
 import React from 'react';
 import HeaderMenu from './HeaderMenu';
-import not_found from '../assets/not_found.png';
+import not_found from '../assets/images/not_found.png';
 import FooterMenu from './FooterMenu';
 
 const NotFound = () => {
