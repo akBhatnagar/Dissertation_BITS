@@ -6,12 +6,6 @@ const friends = require('./friends.json');
 app.use(cors())
 app.use(express.json());
 
-app.use('/login', (req, res) => {
-  console.log("Received request for login");
-  if (!req.body || !req.body.email || !req.body.password){
-    return res.status(401).send({error: 'Missing email or password'});
-  }
-
 app.use('/getFriends', (req, res) => {
   console.log("Fetching list of friends for the user: " + req.body.email);
   let friendList = friends[req.body.email];
@@ -19,9 +13,14 @@ app.use('/getFriends', (req, res) => {
   return res.status(200).send({friendList: friendList});
 });
 
+app.use('/login', (req, res) => {
+  console.log("Received request for login");
+  if (!req.body || !req.body.email || !req.body.password){
+    return res.status(401).send({error: 'Missing email or password'});
+  }
 
   const emailIsValid = users[req.body.email] !== undefined;
-  const passwordIsValid = users[req.body.email] === req.body.password;
+  const passwordIsValid = users[req.body.email].password === req.body.password;
  
   // const emailIsValid = req.body.email === "akshay@admin.com";
   // const passwordIsValid = req.body.password === "admin";
@@ -30,7 +29,13 @@ app.use('/getFriends', (req, res) => {
   if (emailIsValid && passwordIsValid){
     let token = Math.random().toString(36).substr(-8);
     console.log(`Logged in ${req.body.email} with token ${token}`);
-    return res.status(200).send({token: token});
+    const user = users[req.body.email];
+    const responseToSend = {
+      token: token,
+      name: user.name,
+      id: user.id
+    }
+    return res.status(200).send(responseToSend);
   } else {
     const errorMessage = emailIsValid ? "Invalid password" : "Invalid email";
     return res.status(401).send({error: errorMessage})

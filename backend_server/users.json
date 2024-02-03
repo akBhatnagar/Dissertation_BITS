@@ -1,6 +1,28 @@
 {
-    "akshay@admin.com": "admin",
-    "unnati@admin.com": "admin",
-    "admin@admin.com": "admin",
-    "user@admin.com": "admin"
+    "akshay@admin.com": {
+        "password": "admin",
+        "name": "Akshay Bhatnagar",
+        "id": "101"
+    },
+    "unnati@admin.com": {
+        "password": "admin",
+        "name": "Unnati Malviya",
+        "id": "102"
+    },
+    "sachin@admin.com": {
+        "password": "admin",
+        "name": "Sachin Pai",
+        "id": "103"
+    },
+    "adarsh@admin.com": {
+        "password": "admin",
+        "name": "Adarsh Patel",
+        "id": "104"
+    },
+    "mahima@admin.com": {
+        "password": "admin",
+        "name": "Mahima Rajpoot",
+        "id": "105"
+    }
+
 }
