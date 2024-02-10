@@ -1,7 +1,72 @@
 {
-    "akshay@admin.com": ["104", "102", "103"],
-    "unnati@admin.com": ["101", "105"],
-    "sachin@admin.com": ["101", "102", "103", "104"],
-    "adarsh@admin.com": ["101", "102"],
-    "mahima@admin.com": ["101", "102", "104"]
+    "akshay@admin.com": [
+        {
+            "email": "bassi@admin.com",
+            "name": "Anubhav Bassi",
+            "id": "104"
+        },
+        {
+            "email": "abhishek@admin.com",
+            "name": "Abhishek Upmanyu",
+            "id": "102"
+        }, 
+        {
+            "email": "zakir@admin.com",
+            "name": "Zakir Khan",
+            "id": "103"
+        }
+    ],
+    "abhishek@admin.com": [
+        {
+            "email": "akshay@admin.com",
+            "name": "Akshay Bhatnagar",
+            "id": "101"
+        },
+        {        
+            "email": "rahul@admin.com",
+            "name": "Rahul Subramaniam",
+            "id": "105"}
+        ],
+    "zakir@admin.com": [
+        {
+            "email": "akshay@admin.com",
+            "name": "Akshay Bhatnagar",
+            "id": "101"
+        },
+        {
+            "email": "abhishek@admin.com",
+            "name": "Abhishek Upmanyu",
+            "id": "102"
+        }
+    ],
+    
+    "bassi@admin.com": [
+        {
+            "email": "akshay@admin.com",
+            "name": "Akshay Bhatnagar",
+            "id": "101"
+        },
+        {
+            "email": "abhishek@admin.com",
+            "name": "Abhishek Upmanyu",
+            "id": "102"
+        }
+    ],
+    "rahul@admin.com": [
+        {
+            "email": "akshay@admin.com",
+            "name": "Akshay Bhatnagar",
+            "id": "101"
+        },
+        {
+            "email": "abhishek@admin.com",
+            "name": "Abhishek Upmanyu",
+            "id": "102"
+        },
+        {
+            "email": "bassi@admin.com",
+            "name": "Anubhav Bassi",
+            "id": "104"
+        }
+    ]
 }

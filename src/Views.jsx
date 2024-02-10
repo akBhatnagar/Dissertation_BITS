@@ -5,6 +5,7 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Friends from './components/Friends';
 import NotFound from './components/NotFound';
+import SignUp from './components/SignUp';
 
 const Views = () => {
     return (
@@ -14,6 +15,8 @@ const Views = () => {
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/friends' element={<Friends />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/groups' element={<Dashboard />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
     );

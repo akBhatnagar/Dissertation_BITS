@@ -3,8 +3,35 @@ const cors = require('cors');
 const app = express();
 const users = require('./users.json');
 const friends = require('./friends.json');
+const sqlite3 = require('sqlite3').verbose();
+
+const db_path = '/Users/akshay/Documents/EMS_DB';
+
 app.use(cors())
 app.use(express.json());
+
+const db = new sqlite3.Database(db_path);
+
+app.post('/signup', (req, res) => {
+  
+  console.log("Signup request for user with request: " + req.body);
+  
+  userData = req.body;
+
+  const insertQuery = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
+  db.run(insertQuery, [userData.name, userData.email, userData.password], function(err) {
+  if (err) {
+    console.error(err.message);
+  } else {
+    console.log(`A row has been inserted with rowid ${this.lastID}`);
+  }
+});
+
+// Close the database connection
+db.close();
+
+});
+
 
 app.use('/getFriends', (req, res) => {
   console.log("Fetching list of friends for the user: " + req.body.email);
@@ -19,8 +46,10 @@ app.use('/login', (req, res) => {
     return res.status(401).send({error: 'Missing email or password'});
   }
 
-  const emailIsValid = users[req.body.email] !== undefined;
-  const passwordIsValid = users[req.body.email].password === req.body.password;
+  var emailIsValid = users[req.body.email] !== undefined;
+  if (emailIsValid) {
+    var passwordIsValid = users[req.body.email].password === req.body.password;
+  }
  
   // const emailIsValid = req.body.email === "akshay@admin.com";
   // const passwordIsValid = req.body.password === "admin";

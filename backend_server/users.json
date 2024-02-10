@@ -4,24 +4,24 @@
         "name": "Akshay Bhatnagar",
         "id": "101"
     },
-    "unnati@admin.com": {
+    "abhishek@admin.com": {
         "password": "admin",
-        "name": "Unnati Malviya",
+        "name": "Abhishek Upmanyu",
         "id": "102"
     },
-    "sachin@admin.com": {
+    "zakir@admin.com": {
         "password": "admin",
-        "name": "Sachin Pai",
+        "name": "Zakir Khan",
         "id": "103"
     },
-    "adarsh@admin.com": {
+    "bassi@admin.com": {
         "password": "admin",
-        "name": "Adarsh Patel",
+        "name": "Anubhav Bassi",
         "id": "104"
     },
-    "mahima@admin.com": {
+    "rahul@admin.com": {
         "password": "admin",
-        "name": "Mahima Rajpoot",
+        "name": "Rahul Subramaniam",
         "id": "105"
     }
 

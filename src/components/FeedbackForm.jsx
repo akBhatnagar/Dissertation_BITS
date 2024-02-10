@@ -1,3 +1,4 @@
+import { Toast } from 'bootstrap';
 import React, { useState } from 'react';
 
 function FeedbackForm() {
@@ -7,6 +8,15 @@ function FeedbackForm() {
     email: '',
     query: ''
   });
+
+  const [showToast, setShowToast] = useState(false);
+
+  const handleSubmitQuery = () => {
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 5000); // Hide toast after 3 seconds
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,14 +28,20 @@ function FeedbackForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // You can add logic here to send the form data to your backend for processing
+    document.getElementById("querySubmittedToast").classList.remove("hidden");
+    document.getElementById("name").value = "";
+    document.getElementById("phoneNumber").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("query").value = "";
+    setTimeout(() => {
+      document.getElementById("querySubmittedToast").classList.add("hidden");
+    }, 2000);
   };
 
   return (
     <div className="flex items-center justify-center p-0 grid h-full w-full h-lvh m-auto bg-gray-400">
       <div className="max-w-2xl p-8 shadow-md rounded-lg bg-gray-300">
-        <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+        <h2 className="text-3xl font-bold mb-4">Have a query?  Let us know!</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block mb-2">Name:</label>
@@ -35,7 +51,7 @@ function FeedbackForm() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full bg-gray-200"
               required
             />
           </div>
@@ -47,7 +63,7 @@ function FeedbackForm() {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full bg-gray-200"
               required
             />
           </div>
@@ -59,7 +75,7 @@ function FeedbackForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full bg-gray-200"
               required
             />
           </div>
@@ -70,13 +86,20 @@ function FeedbackForm() {
               name="query"
               value={formData.query}
               onChange={handleChange}
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full bg-gray-200"
               required
             ></textarea>
           </div>
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
         </form>
       </div>
+        <div
+          id="querySubmittedToast"
+          className="fixed flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 hidden"
+          role="info"
+        >
+          <div className="text-sm font-normal text-white">Query submitted successfully</div>
+        </div>
     </div>
   );
 }
