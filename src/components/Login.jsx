@@ -49,7 +49,7 @@ export default function Login() {
 
         if (response.token !== undefined) {
             setToken(response.token);
-            window.localStorage.setItem("auth_token", token);
+            window.localStorage.setItem("auth_token", response.token);
             window.localStorage.setItem("email", email);
             window.localStorage.setItem("name", response.name);
             window.localStorage.setItem("id", response.id);

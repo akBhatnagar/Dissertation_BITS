@@ -17,6 +17,7 @@ const Views = () => {
             <Route path='/friends' element={<Friends />} />
             <Route path='/signup' element={<SignUp />} />
             <Route path='/groups' element={<Dashboard />} />
+            <Route path='/login' element={<Login />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
     );
