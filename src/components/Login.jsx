@@ -18,7 +18,7 @@ export default function Login() {
 
     async function loginUser(credentials) {
 
-        return fetch('http://localhost:8080/login', {
+        return fetch('http://localhost:8080/login/v1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

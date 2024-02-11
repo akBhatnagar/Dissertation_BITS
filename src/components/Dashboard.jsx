@@ -4,11 +4,17 @@ import FooterMenu from './FooterMenu';
 import robotImage from '../assets/images/robot.jpeg';
 import { checkIfUserLoggedIn } from '../utils/UserAuthenticator';
 import Login from './Login';
+import AddExpenseModal from './Modals/AddExpenseModal';
+import AddExpense from './AddExpense';
 
 const Dashboard = () => {
 
   const [name, setName] = useState('');
   const [friends, setFriends] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [friendId, setFriendId] = useState("");
+  const [friendName, setFriendName] = useState("");
+  const [userId, setUserId] = useState("");
 
   const handleAddExpense = (friendId) => {
     console.log(`Adding expense for friend with ID ${friendId}`)
@@ -20,6 +26,7 @@ const Dashboard = () => {
 
     if (storedName) {
       setName(storedName);
+      setUserId(localStorage.getItem("id"));
     }
 
     fetch('http://localhost:8080/getFriends', {
@@ -49,7 +56,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className=' bg-gray-200'>
       <HeaderMenu />
       <div className=' flex'>
         <div className="flex-1 flex-col h-screen pt-10">
@@ -70,7 +77,11 @@ const Dashboard = () => {
                     <td className="border border-gray-300 px-4 py-2">
                       <button
                         className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded justify-center"
-                        onClick={() => handleAddExpense(friend.id)}
+                        onClick={() => {
+                          setShowModal(true);
+                          setFriendId(friend.id);
+                          setFriendName(friend.name);
+                        }}
                       >
                         Add Expense
                       </button>
@@ -94,6 +105,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <AddExpenseModal isVisible={showModal} onClose={() => setShowModal(false)} friendId={friendId} userId={userId} friendName={friendName}>
+        <AddExpense friendName={friendName} />
+      </AddExpenseModal>
       <FooterMenu />
     </div>
   )
