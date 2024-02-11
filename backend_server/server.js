@@ -40,36 +40,6 @@ app.use('/getFriends', (req, res) => {
   return res.status(200).send({ friendList: friendList });
 });
 
-app.use('/login', (req, res) => {
-  console.log("Received request for login");
-  if (!req.body || !req.body.email || !req.body.password) {
-    return res.status(401).send({ error: 'Missing email or password' });
-  }
-
-  var emailIsValid = users[req.body.email] !== undefined;
-  if (emailIsValid) {
-    var passwordIsValid = users[req.body.email].password === req.body.password;
-  }
-
-  // const emailIsValid = req.body.email === "akshay@admin.com";
-  // const passwordIsValid = req.body.password === "admin";
-
-  // Simple authentication based on a hardcoded email and password of the user
-  if (emailIsValid && passwordIsValid) {
-    let token = Math.random().toString(36).substr(-8);
-    console.log(`Logged in ${req.body.email} with token ${token}`);
-    const user = users[req.body.email];
-    const responseToSend = {
-      token: token,
-      name: user.name,
-      id: user.id
-    }
-    return res.status(200).send(responseToSend);
-  } else {
-    const errorMessage = emailIsValid ? "Invalid password" : "Invalid email";
-    return res.status(401).send({ error: errorMessage })
-  }
-});
 
 app.use('/login/v1', (req, res) => {
   console.log("Received request for login v1");
@@ -78,7 +48,7 @@ app.use('/login/v1', (req, res) => {
   }
 
   const errorMessage = "";
-  const responseToSend = {};
+  let responseToSend = {};
 
   const query = `SELECT * FROM users WHERE email = ?`;
   db.all(query, [req.body.email], (err, rows) => {
@@ -93,7 +63,7 @@ app.use('/login/v1', (req, res) => {
       if (user.password === req.body.password) {
         // Passwords match, login successful
         let token = Math.random().toString(36).substr(-8);
-        console.log('Login successful');
+        console.log('Login successful, token: ', token);
         responseToSend = {
           token: token,
           name: user.name,
