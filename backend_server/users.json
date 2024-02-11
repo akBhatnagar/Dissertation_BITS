@@ -1,0 +1,28 @@
+{
+    "akshay@admin.com": {
+        "password": "admin",
+        "name": "Akshay Bhatnagar",
+        "id": "101"
+    },
+    "abhishek@admin.com": {
+        "password": "admin",
+        "name": "Abhishek Upmanyu",
+        "id": "102"
+    },
+    "zakir@admin.com": {
+        "password": "admin",
+        "name": "Zakir Khan",
+        "id": "103"
+    },
+    "bassi@admin.com": {
+        "password": "admin",
+        "name": "Anubhav Bassi",
+        "id": "104"
+    },
+    "rahul@admin.com": {
+        "password": "admin",
+        "name": "Rahul Subramaniam",
+        "id": "105"
+    }
+
+}

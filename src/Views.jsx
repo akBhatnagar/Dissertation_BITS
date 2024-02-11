@@ -5,15 +5,18 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Friends from './components/Friends';
 import NotFound from './components/NotFound';
+import SignUp from './components/SignUp';
 
 const Views = () => {
     return (
         <Routes>
             <Route index element={<Login />} />
-            <Route exact path='/dashboard' element={<Dashboard />} />
-            <Route exact path='/about' element={<About />} />
-            <Route exact path='/contact' element={<Contact />} />
-            <Route exact path='/friends' element={<Friends />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/contact' element={<Contact />} />
+            <Route path='/friends' element={<Friends />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/groups' element={<Dashboard />} />
             <Route path='*' element={<NotFound />} />
         </Routes>
     );
