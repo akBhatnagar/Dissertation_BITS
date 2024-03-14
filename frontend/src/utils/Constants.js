@@ -1,0 +1,39 @@
+export const facebookUrl = "https://www.facebook.com/aksh1902";
+export const twitterUrl = "https://twitter.com/coder_akshay";
+export const gmailUrl = "mailTo:akshaybhatnagar1998@gmail.com";
+export const linkedinUrl = "https://www.linkedin.com/in/akshay-bhatnagar-3982a410b/";
+
+export const baseUrl = "http://localhost:8080";
+export const indexUrl = "/";
+export const loginUrl = "/login";
+export const signupUrl = "/signup";
+export const addCategoryUrl = "/addCategory";
+export const getCategoriesUrl = "/getCategories";
+export const getFriendsUrl = "/getFriends";
+export const addFriendUrl = "/addFriend";
+export const removeFriendUrl = "/removeFriend";
+export const searchFriendByIdUrl = "/searchFriendById";
+export const searchFriendByNameUrl = "/searchFriendByName";
+export const getGroupsUrl = "/groups";
+export const addGroupUrl = "/addGroup";
+export const deleteGroupUrl = "/deleteGroup";
+export const getGroupUsersUrl = "/groups/users";
+export const searchGroupByNameUrl = "/searchGroupByName";
+export const getExpenseByIdUrl = "/getExpenseById";
+export const addExpenseUrl = "/addExpense";
+export const editExpenseUrl = "/editExpense";
+export const deleteExpenseUrl = "/deleteExpense";
+export const getExpensesByDateUrl = "/getExpensesByDate";
+export const getExpensesByFriendUrl = "/getExpensesByFriend";
+export const getSharedExpenseByIdUrl = "/getSharedExpenseById";
+export const addSharedExpenseUrl = "/addSharedExpense";
+export const editSharedExpenseUrl = "/editSharedExpense";
+export const deleteSharedExpenseUrl = "/deleteSharedExpense";
+export const getSharedExpensesByDateUrl = "/getSharedExpensesByDate";
+export const getSharedExpensesByGroupIdUrl = "/getSharedExpensesByGroupId";
+export const addFeedbackUrl = "/addFeedback";
+export const dashboardUrl = "/dashboard";
+export const aboutUrl = "/about";
+export const contactUrl = "/contact";
+
+
