@@ -4,8 +4,7 @@ const AddGroup = ({ userId, onAddGroup }) => {
     const [groupName, setGroupName] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [selectedMembersId, setSelectedMembersId] = useState([]);
-    const [selectedMembersName, setSelectedMembersName] = useState([]);
+    const [members, setMembers] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [users, setUsers] = useState([]);
 
@@ -16,9 +15,11 @@ const AddGroup = ({ userId, onAddGroup }) => {
             setSearchResults([]);
             return;
         }
+
         const filteredUsers = users.filter(user =>
-            user.name.toLowerCase().includes(value.toLowerCase()) && !selectedMembersId.includes(user.id)
+            user.name.toLowerCase().includes(value.toLowerCase()) && !members.some(member => member.id === user.id)
         );
+
         setSearchResults(filteredUsers.slice(0, 5));
     };
 
@@ -54,11 +55,14 @@ const AddGroup = ({ userId, onAddGroup }) => {
 
     const handleSelectMemberToAdd = (memberId, memberName) => {
         if (memberName.trim() !== '') {
-            setSelectedMembersName([...selectedMembersName, memberName]);
-            setSelectedMembersId([...selectedMembersId, memberId]);
+
+            setMembers([...members, { id: memberId, name: memberName }]);
 
             setSearchTerm('');
             setSearchResults([]);
+
+            // members.forEach(member => { console.log(member.name) });
+            // console.log("Selected members: " + members[0].name);
         }
     };
 
@@ -73,7 +77,7 @@ const AddGroup = ({ userId, onAddGroup }) => {
                 body: JSON.stringify({
                     userId,
                     groupName,
-                    members: selectedMembersId,
+                    members: members.map(member => member.id),
                 }),
             });
             const data = await response.json();
@@ -93,6 +97,11 @@ const AddGroup = ({ userId, onAddGroup }) => {
         } catch (error) {
             console.error('Error adding group:', error);
         }
+    };
+
+    const handleRemoveSelectedMember = (memberId, memberName) => {
+        alert("Member to be removed: " + memberName + " with ID: " + memberId);
+        setMembers(members.filter(member => member.id !== memberId));
     };
 
     return (
@@ -138,24 +147,24 @@ const AddGroup = ({ userId, onAddGroup }) => {
                             <span className="block text-sm font-medium text-gray-700">Selected Members:</span>
                             <div className="mt-2 flex justify-between">
                                 <ul className="border border-gray-200 rounded-md overflow-hidden w-1/2">
-                                    {selectedMembersName.slice(selectedMembersName.length / 2).map((memberName, index) => (
+                                    {members.slice(members.length / 2).map((member) => (
                                         <li
-                                            key={index}
-                                            onClick={() => alert("Remove member")}
+                                            key={member.id}
+                                            onClick={() => handleRemoveSelectedMember(member.id, member.name)}
                                             className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                                         >
-                                            {memberName} {/* Display member name here */}
+                                            {member.name} {/* Display member name here */}
                                         </li>
                                     ))}
                                 </ul>
                                 <ul className="border border-gray-200 rounded-md overflow-hidden w-1/2">
-                                    {selectedMembersName.slice(0, selectedMembersName.length / 2).map((memberName, index) => (
+                                    {members.slice(0, members.length / 2).map((member) => (
                                         <li
-                                            key={index}
-                                            onClick={() => alert("Remove member")}
+                                            key={member.id}
+                                            onClick={() => handleRemoveSelectedMember(member.id, member.name)}
                                             className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                                         >
-                                            {memberName} {/* Display member name here */}
+                                            {member.name} {/* Display member name here */}
                                         </li>
                                     ))}
                                 </ul>
