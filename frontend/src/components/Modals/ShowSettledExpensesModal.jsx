@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
+const constants = require('../../utils/Constants');
+
 const ShowSettledExpensesModal = ({ isVisible, onClose, userId, friendId, friendName }) => {
 
     const [settledExpenses, setSettledExpenses] = useState([]);
@@ -11,7 +13,7 @@ const ShowSettledExpensesModal = ({ isVisible, onClose, userId, friendId, friend
             setIsLoading(true);
             console.log("User id is: " + userId);
             console.log("Friend id is: " + friendId);
-            const response = await fetch('http://localhost:8080/getSettledExpensesBetween', {
+            const response = await fetch(constants.baseUrl + '/getSettledExpensesBetween', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +41,7 @@ const ShowSettledExpensesModal = ({ isVisible, onClose, userId, friendId, friend
     const handleDeleteExpense = async (expenseId) => {
         if (window.confirm('Are you sure you want to delete this settled expense?')) {
             try {
-                const response = await fetch('http://localhost:8080/deleteSettledExpense', {
+                const response = await fetch(constants.baseUrl + '/deleteSettledExpense', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

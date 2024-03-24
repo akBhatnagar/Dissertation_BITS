@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+const constants = require('../utils/Constants');
+
 const AddSharedExpense = ({ groupName, groupId, setShowModal }) => {
 
     const [categories, setCategories] = useState([]);
@@ -10,7 +12,7 @@ const AddSharedExpense = ({ groupName, groupId, setShowModal }) => {
 
     const fetchGroupMembers = async () => {
         try {
-            const response = await fetch('http://localhost:8080/groups/users', {
+            const response = await fetch(constants.baseUrl + '/groups/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -28,7 +30,7 @@ const AddSharedExpense = ({ groupName, groupId, setShowModal }) => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:8080/getCategories', {
+        fetch(constants.baseUrl + '/getCategories', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ const AddSharedExpense = ({ groupName, groupId, setShowModal }) => {
         const description = document.getElementById('description').value;
 
         try {
-            const response = await fetch('http://localhost:8080/addSharedExpense', {
+            const response = await fetch(constants.baseUrl + '/addSharedExpense', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

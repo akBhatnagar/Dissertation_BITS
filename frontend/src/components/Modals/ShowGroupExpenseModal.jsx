@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const constants = require('../../utils/Constants');
+
 const ShowGroupExpenseModal = ({ isVisible, onClose, groupId, userId, groupName }) => {
     const [expenses, setExpenses] = useState([]);
     const [message, setMessage] = useState('');
@@ -16,7 +18,7 @@ const ShowGroupExpenseModal = ({ isVisible, onClose, groupId, userId, groupName 
 
     const fetchExpenses = async () => {
         try {
-            const response = await fetch('http://localhost:8080/getSharedExpensesByGroupId', {
+            const response = await fetch(constants.baseUrl + '/getSharedExpensesByGroupId', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +49,7 @@ const ShowGroupExpenseModal = ({ isVisible, onClose, groupId, userId, groupName 
 
     const settleGroupExpenses = async () => {
         try {
-            const response = await fetch('http://localhost:8080/settleAllExpenses', {
+            const response = await fetch(constants.baseUrl + '/settleAllExpenses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+const constants = require('../utils/Constants');
+
 const AddExpense = ({ friendName, friendId, setShowModal }) => {
 
     const [categories, setCategories] = useState([]);
@@ -8,7 +10,7 @@ const AddExpense = ({ friendName, friendId, setShowModal }) => {
 
 
     useEffect(() => {
-        fetch('http://localhost:8080/getCategories', {
+        fetch(constants.baseUrl + '/getCategories', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,12 +34,13 @@ const AddExpense = ({ friendName, friendId, setShowModal }) => {
         const description = document.getElementById('description').value;
 
         try {
-            const response = await fetch('http://localhost:8080/addExpense', {
+            const response = await fetch(constants.baseUrl + '/addExpense', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    userId: userId,
                     friendId: friendId,
                     amount: amount,
                     description: description,

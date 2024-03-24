@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const constants = require('../utils/Constants');
+
 const AddFriend = ({ userId, onAddFriend }) => {
 
     const [friendId, setFriendId] = useState();
@@ -30,7 +32,7 @@ const AddFriend = ({ userId, onAddFriend }) => {
 
     const getUsersList = async () => {
         try {
-            const response = await fetch('http://localhost:8080/getAllUsers', {
+            const response = await fetch(constants.baseUrl + '/getAllUsers', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,7 +52,7 @@ const AddFriend = ({ userId, onAddFriend }) => {
         console.log("Adding friend with ids: " + userId + "   " + friendId);
         if (friendName.trim() !== '') {
             try {
-                const response = await fetch('http://localhost:8080/addFriend', {
+                const response = await fetch(constants.baseUrl + '/addFriend', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

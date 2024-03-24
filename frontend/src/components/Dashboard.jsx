@@ -11,6 +11,8 @@ import AddFriend from './AddFriend';
 import InformationBox from './InformationBox';
 import { FaTrash } from 'react-icons/fa';
 
+const constants = require('../utils/Constants');
+
 const Dashboard = () => {
 
     const userId = localStorage.getItem('id');
@@ -30,7 +32,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/getFriends', {
+                const response = await fetch(constants.baseUrl + '/getFriends', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -94,7 +96,7 @@ const Dashboard = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/removeFriend', {
+            const response = await fetch(constants.baseUrl + '/removeFriend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

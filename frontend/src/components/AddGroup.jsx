@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const constants = require('../utils/Constants');
+
 const AddGroup = ({ userId, onAddGroup }) => {
     const [groupName, setGroupName] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,7 +34,7 @@ const AddGroup = ({ userId, onAddGroup }) => {
 
     const getUsersList = async () => {
         try {
-            const response = await fetch('http://localhost:8080/getAllUsers', {
+            const response = await fetch(constants.baseUrl + '/getAllUsers', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,7 +71,7 @@ const AddGroup = ({ userId, onAddGroup }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/addGroup', {
+            const response = await fetch(constants.baseUrl + '/addGroup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

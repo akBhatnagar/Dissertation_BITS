@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Dashboard from './Dashboard';
 
+const constants = require('../utils/Constants');
+
 export default function Login() {
 
     const navigate = useNavigate();
@@ -15,7 +17,7 @@ export default function Login() {
 
     async function loginUser(credentials) {
 
-        return fetch('http://localhost:8080/login/v1', {
+        return fetch(constants.baseUrl + '/login/v1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

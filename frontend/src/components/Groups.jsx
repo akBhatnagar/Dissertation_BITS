@@ -10,6 +10,8 @@ import { FaTrash } from 'react-icons/fa';
 import AddGroupModal from './Modals/AddGroupModal';
 import AddGroup from './AddGroup';
 
+const constants = require('../utils/Constants');
+
 const Groups = () => {
     const userId = localStorage.getItem('id');
     const name = window.localStorage.getItem('name');
@@ -30,7 +32,7 @@ const Groups = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/groups', {
+                const response = await fetch(constants.baseUrl + '/groups', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -68,7 +70,7 @@ const Groups = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/deleteGroup', {
+            const response = await fetch(constants.baseUrl + '/deleteGroup', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

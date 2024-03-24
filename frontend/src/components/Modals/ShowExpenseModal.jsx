@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const constants = require('../../utils/Constants');
+
 const ShowExpenseModal = ({ isVisible, onClose, friendId, userId, children, friendName }) => {
     const [expenses, setExpenses] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
@@ -8,7 +10,7 @@ const ShowExpenseModal = ({ isVisible, onClose, friendId, userId, children, frie
 
     const fetchExpenses = async () => {
         try {
-            const response = await fetch('http://localhost:8080/getExpensesByFriend', {
+            const response = await fetch(constants.baseUrl + '/getExpensesByFriend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +60,7 @@ const ShowExpenseModal = ({ isVisible, onClose, friendId, userId, children, frie
     const handleSettleExpense = async (expenseId, amount, description, date, categoryId) => {
         try {
             // Call addSettledExpense API to add a record in the database
-            const settledResponse = await fetch('http://localhost:8080/addSettledExpense', {
+            const settledResponse = await fetch(constants.baseUrl + '/addSettledExpense', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +79,7 @@ const ShowExpenseModal = ({ isVisible, onClose, friendId, userId, children, frie
             }
 
             // Call deleteExpense API to delete the expense
-            const deleteResponse = await fetch('http://localhost:8080/deleteExpense', {
+            const deleteResponse = await fetch(constants.baseUrl + '/deleteExpense', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,7 +102,7 @@ const ShowExpenseModal = ({ isVisible, onClose, friendId, userId, children, frie
 
     const settleAllExpenses = async () => {
         try {
-            const response = await fetch('http://localhost:8080/settleAllExpenses', {
+            const response = await fetch(constants.baseUrl + '/settleAllExpenses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
