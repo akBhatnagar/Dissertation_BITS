@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const users = require('./users.json');
 const friends = require('./friends.json');
 const sqlite3 = require('sqlite3').verbose();
 
@@ -32,14 +31,36 @@ app.post('/signup', (req, res) => {
 
 });
 
-
-app.use('/getFriends', (req, res) => {
-  console.log("Fetching list of friends for the user: " + req.body.email);
-  let friendList = friends[req.body.email];
-  if (!friendList) friendList = [];
+app.use('/getFriends', async (req, res) => {
+  if (!req.body.userId) {
+    return res.status(400).send({ error: "Missing parameter: userId" });
+  }
+  console.log("Fetching list of friends for the user id: " + req.body.userId);
+  // let friendList = friends[req.body.userId];
+  // console.log(friendList);
+  let friendList = await getFriends(req.body.userId);
+  console.log("Returning list of friends");
+  // if (!friendList) friendList = [];
   return res.status(200).send({ friendList: friendList });
 });
 
+async function getFriends(userId) {
+
+  var getFriendsQuery = `SELECT u.email, u.name, u.id
+                        FROM users u
+                        JOIN friends f ON u.id = f.friendId
+                        WHERE f.userId = ?;
+  `
+
+  db.all(getFriendsQuery, [userId], (error, results) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    console.log(results);
+    return results;
+  });
+}
 
 app.use('/login/v1', (req, res) => {
   console.log("Received request for login v1");
@@ -47,7 +68,7 @@ app.use('/login/v1', (req, res) => {
     return res.status(401).send({ error: 'Missing email or password' });
   }
 
-  const errorMessage = "";
+  let errorMessage = "";
   let responseToSend = {};
 
   const query = `SELECT * FROM users WHERE email = ?`;
@@ -105,9 +126,6 @@ app.get('/getCategories', (req, res) => {
   });
 });
 
-
-// This is just an example to show how you can check the validity of a token
-// In real life scenarios, this would probably be done by querying against a database
 app.use('/checkToken', function (req, res) {
   let user = getUserFromToken(req.query.token);
   if (user) {
@@ -133,23 +151,6 @@ function getUserFromToken(token) {
 startServer();
 
 // const testFunc = () => {
-//   console.log("Received request for getting categories");
-
-//   const categories = [];
-
-//   const query = `SELECT * FROM tags`;
-//   db.all(query, (err, rows) => {
-//     if (err) {
-//       console.error(err.message);
-//       return res.status(500).send({ error: 'Something went wrong at the server end' });
-//     }
-//     if (rows.length > 0) {
-//       rows.forEach(row => {
-//         categories.push(row.name);
-//       });
-//       console.log('got categories', categories);
-//       return res.status(200).send(responseToSend);
-//     }
-//   });
+//   getFriends(1);
 // }
 // testFunc();

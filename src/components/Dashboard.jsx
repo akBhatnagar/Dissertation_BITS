@@ -23,28 +23,30 @@ const Dashboard = () => {
   useEffect(() => {
 
     const storedName = localStorage.getItem('name');
+    // const userId = ;
 
     if (storedName) {
       setName(storedName);
-      setUserId(localStorage.getItem("id"));
+      // setUserId(localStorage.getItem("id"));
     }
 
+    var userId = localStorage.getItem('id');
     fetch('http://localhost:8080/getFriends', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ userId }),
     })
       .then((response) => response.json())
       .then((data) => {
-
+        console.log(data.friendList);
         setFriends(data.friendList);
       })
       .catch((error) => {
         console.error('Error fetching friends:', error);
       });
-  }, []);
+  }, [friends]);
 
   const email = window.localStorage.getItem("email");
 

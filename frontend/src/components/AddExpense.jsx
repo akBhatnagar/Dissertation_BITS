@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-const AddExpense = ({ friendName }) => {
+const AddExpense = ({ friendName, friendId, setShowModal }) => {
 
     const [categories, setCategories] = useState([]);
+    const [whoPaid, setWhoPaid] = useState(localStorage.getItem('id')); // Default to 'You'
+    const [userId, setUserId] = useState(localStorage.getItem('id'));
+
+
     useEffect(() => {
         fetch('http://localhost:8080/getCategories', {
             method: 'GET',
@@ -20,10 +24,37 @@ const AddExpense = ({ friendName }) => {
             });
     }, []);
 
-    const handleAddExpense = () => {
-        console.log("In handle add expense")
-        alert("In handle expense");
+    const handleAddExpense = async (e, setShowModal, friendId) => {
+        e.preventDefault();
+        const amount = document.getElementById('amount').value;
+        const categoryId = document.getElementById('category').value;
+        const date = document.getElementById('date').value;
+        const description = document.getElementById('description').value;
+
+        try {
+            const response = await fetch('http://localhost:8080/addExpense', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    friendId: friendId,
+                    amount: amount,
+                    description: description,
+                    date: date,
+                    categoryId: categoryId,
+                    paidBy: whoPaid
+                })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add expense');
+            }
+            setShowModal(false); // Close the modal window
+        } catch (error) {
+            console.error('Error adding expense:', error);
+        }
     };
+
     return (
         <React.Fragment>
             <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
@@ -39,12 +70,25 @@ const AddExpense = ({ friendName }) => {
                             <input id="amount" required type="number" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Enter amount" />
                         </div>
                         <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">Who Paid?<sup className=' text-red-400'> *</sup></label>
+                            <div>
+                                <label className="inline-flex items-center">
+                                    <input type="radio" className="form-radio" name="whoPaid" value={localStorage.getItem('id')} checked={whoPaid === localStorage.getItem('id')} onChange={() => setWhoPaid(localStorage.getItem('id'))} />
+                                    <span className="ml-2">You</span>
+                                </label>
+                                <label className="inline-flex items-center ml-6">
+                                    <input type="radio" className="form-radio" name="whoPaid" value={friendId} checked={whoPaid === friendId} onChange={() => setWhoPaid(friendId)} />
+                                    <span className="ml-2">{friendName}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="mb-4">
                             <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category<sup className=' text-red-400'> *</sup></label>
                             <select id="category" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 {categories.map((category) => (
-                                    <option key={category} value={category}>{category}</option>
+                                    <option key={category.id} value={category.id}>{category.name}</option>
                                 ))}
-                                <option key="others" value="others">Others</option>
+                                <option key="-1" value="others">Others</option>
                             </select>
                         </div>
                         <div className="mb-4">
@@ -56,7 +100,7 @@ const AddExpense = ({ friendName }) => {
                             <textarea id="description" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" rows="3" placeholder="Enter description"></textarea>
                         </div>
                         <div className="flex justify-end">
-                            <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onSubmit={(e) => { handleAddExpense(e) }}>Record Expense</button>
+                            <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={(e) => handleAddExpense(e, setShowModal, friendId)}>Record Expense</button>
                         </div>
                     </form>
                 </div>

@@ -50,11 +50,11 @@ function SignUp() {
       <img className='absolute w-full h-full object-cover mix-blend-overlay bg-center' src={bgImage} alt="/" />
 
 
-      <div id="emailExistToast" class="flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 fixed right-2 bottom-2 hidden" role="alert">
-        <svg class="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+      <div id="emailExistToast" className="flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 fixed right-2 bottom-2 hidden" role="alert">
+        <svg className="w-5 h-5 text-blue-600 dark:text-blue-500 rotate-45" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9" />
         </svg>
-        <div class="ps-4 text-sm font-normal">Email already exist.</div>
+        <div className="ps-4 text-sm font-normal">Email already exist.</div>
       </div>
 
       <div className='flex justify-center items-center h-full '>
