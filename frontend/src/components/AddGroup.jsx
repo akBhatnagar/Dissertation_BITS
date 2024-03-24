@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import InformationBox from './InformationBox';
 
 const AddGroup = ({ userId, onAddGroup }) => {
     const [groupName, setGroupName] = useState('');
