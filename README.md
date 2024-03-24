@@ -3,6 +3,13 @@
 ## Description
 Expense Management System is a web application for managing expenses, friends, and groups. It provides features such as adding, editing, and deleting expenses, as well as managing friends and groups for shared expenses.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [License](#license)
+
 ## Installation
 1. Clone the repository: `git clone https://github.com/akBhatnagar/Dissertation_BITS.git`
 2. Navigate to the project directory: `cd Dissertation_BITS`
