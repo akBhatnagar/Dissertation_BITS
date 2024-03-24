@@ -8,6 +8,8 @@ import ShowExpenseModal from './Modals/ShowExpenseModal';
 import ShowSettledExpensesModal from './Modals/ShowSettledExpensesModal';
 import AddFriendModal from './Modals/AddFriendModal';
 import AddFriend from './AddFriend';
+import InformationBox from './InformationBox';
+import { FaTrash } from 'react-icons/fa';
 
 const Dashboard = () => {
 
@@ -22,6 +24,8 @@ const Dashboard = () => {
     const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
     const [newFriendId, setNewFriendId] = useState();
     const [newFriendName, setNewFriendName] = useState('');
+    const [showInformation, setShowInformation] = useState(false);
+    const [informationMessage, setInformationMessage] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,10 +67,54 @@ const Dashboard = () => {
         setAddFriendModalVisible(true);
     };
 
-    const onAddFriend = (friendId, friendName) => {
+    const onAddFriend = (friendId, friendName, message, result = false) => {
         // Assuming friendId is the ID of the newly added friend
-        setFriends([...friends, { id: friendId, name: friendName }]);
+        if (result) {
+            setFriends([...friends, { id: friendId, name: friendName }]);
+        }
+        setAddFriendModalVisible(false);
+        setInformationMessage(message); // Set the message for the information box
+        setShowInformation(true); // Show the information box
+
+        // Close the information box after 3 seconds
+        setTimeout(() => {
+            setShowInformation(false);
+        }, 3000);
     };
+
+    const handleCloseInformation = () => {
+        setShowInformation(false);
+    };
+
+
+    const handleRemoveFriend = async (friendId) => {
+        const confirmed = window.confirm('Are you sure you want to remove this friend?');
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/removeFriend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    friendId: friendId,
+                }),
+            });
+            if (response.ok) {
+                // Remove the friend from the list
+                setFriends(friends.filter((friend) => friend.id !== friendId));
+            } else {
+                console.error('Failed to remove friend');
+            }
+        } catch (error) {
+            console.error('Error removing friend:', error);
+        }
+    };
+
 
     return (
         <div className=' bg-gray-200'>
@@ -80,7 +128,7 @@ const Dashboard = () => {
                                 <thead>
                                     <tr className="bg-gray-200">
                                         <th className="border border-gray-300 px-4 py-2">Name</th>
-                                        <th className="border border-gray-300 px-4 py-2" colSpan={3}>Actions</th>
+                                        <th className="border border-gray-300 px-4 py-2" colSpan={4}>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,7 +165,11 @@ const Dashboard = () => {
                                                     Show Settled Expenses
                                                 </button>
                                             </td>
-
+                                            <td>
+                                                <button onClick={() => handleRemoveFriend(friend.id)}>
+                                                    <FaTrash />
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -152,9 +204,10 @@ const Dashboard = () => {
             <ShowSettledExpensesModal isVisible={showSettledExpensesModal} onClose={() => setShowSettledExpensesModal(false)} userId={userId} friendId={friendId} friendName={friendName} />
 
             <AddFriendModal isVisible={isAddFriendModalVisible} onClose={() => setAddFriendModalVisible(false)} userId={userId} newFriendId={newFriendId} newFriendName={newFriendName}>
-                <AddFriend userId={userId} newFriendId={newFriendId} newFriendName={newFriendName} onAddFriend={onAddFriend} />
+                <AddFriend userId={userId} onAddFriend={onAddFriend} />
             </AddFriendModal>
             <FooterMenu />
+            {showInformation && <InformationBox message={informationMessage} onClose={handleCloseInformation} autoCloseDuration={3000} />}
         </div>
     );
 };

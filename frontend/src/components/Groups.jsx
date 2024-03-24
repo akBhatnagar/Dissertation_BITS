@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import HeaderMenu from './HeaderMenu';
 import FooterMenu from './FooterMenu';
 import robotImage from '../assets/images/robot.jpeg';
-import ShowExpenseModal from './Modals/ShowExpenseModal';
+import ShowGroupExpenseModal from './Modals/ShowGroupExpenseModal';
 import AddExpenseModal from './Modals/AddExpenseModal';
-import AddExpense from './AddExpense';
+import AddSharedExpense from './AddSharedExpense';
 import ShowGroupMembersModal from './Modals/ShowGroupMembersModal';
+import { FaTrash } from 'react-icons/fa';
+import AddGroupModal from './Modals/AddGroupModal';
+import AddGroup from './AddGroup';
 
 const Groups = () => {
     const userId = localStorage.getItem('id');
@@ -17,6 +20,12 @@ const Groups = () => {
     const [showAllExpensesModal, setShowAllExpensesModal] = useState(false);
     const [showSettledExpensesModal, setShowSettledExpensesModal] = useState(false);
     const [showGroupMembersModal, setShowGroupMembersModal] = useState(false);
+    const [isAddGroupModalVisible, setAddGroupModalVisible] = useState(false);
+    const [showInformation, setShowInformation] = useState(false);
+    const [informationMessage, setInformationMessage] = useState('');
+    const [newGroupId, setNewGroupId] = useState('');
+    const [newGroupName, setNewGroupName] = useState('');
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +49,7 @@ const Groups = () => {
         fetchData();
     }, [userId]);
 
-    const handleShowExpenses = (groupId, groupName) => {
+    const handleShowGroupExpenses = (groupId, groupName) => {
         setGroupId(groupId);
         setGroupName(groupName);
         setShowAllExpensesModal(true);
@@ -51,6 +60,55 @@ const Groups = () => {
         setGroupName(groupName);
         setShowGroupMembersModal(true);
     };
+
+    const handleRemoveGroup = async (groupId) => {
+        const confirmed = window.confirm('Are you sure you want to remove this group?');
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/deleteGroup', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    groupId: groupId
+                }),
+            });
+            if (response.ok) {
+                // Remove the group from the list
+                setGroups(groups.filter((group) => group.id !== groupId));
+            } else {
+                console.error('Failed to remove group');
+            }
+        } catch (error) {
+            console.error('Error removing group:', error);
+        }
+    };
+
+    const onAddGroup = (groupId, groupName, message, result = false) => {
+        // Assuming groupId is the ID of the newly added group
+        if (result) {
+            setGroups([...groups, { id: groupId, name: groupName }]);
+        }
+        setAddGroupModalVisible(false);
+        setInformationMessage(message); // Set the message for the information box
+        setShowInformation(true); // Show the information box
+
+        // Close the information box after 3 seconds
+        setTimeout(() => {
+            setShowInformation(false);
+        }, 3000);
+    };
+
+    const handleAddGroup = (newGroupName, newGroupId) => {
+        setNewGroupId(newGroupId);
+        setNewGroupName(newGroupName);
+        setAddGroupModalVisible(true);
+    };
+
 
     return (
         <div className=' bg-gray-200'>
@@ -75,9 +133,9 @@ const Groups = () => {
                                                 <button
                                                     className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded justify-center"
                                                     onClick={() => {
-                                                        setShowModal(true);
                                                         setGroupId(group.id);
                                                         setGroupName(group.name);
+                                                        setShowModal(true);
                                                     }}
                                                 >
                                                     Add Expense
@@ -86,7 +144,7 @@ const Groups = () => {
                                             <td className="border border-gray-300 px-4 py-2">
                                                 <button
                                                     className=" bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded justify-center"
-                                                    onClick={() => handleShowExpenses(group.id, group.name)}
+                                                    onClick={() => handleShowGroupExpenses(group.id, group.name)}
                                                 >
                                                     Show expenses
                                                 </button>
@@ -101,12 +159,20 @@ const Groups = () => {
                                                     Show members
                                                 </button>
                                             </td>
+                                            <td>
+                                                <button onClick={() => handleRemoveGroup(group.id)}>
+                                                    <FaTrash />
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                             <div className="flex-1 justify-end">
-                                <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Add Group</button>
+                                <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                                    onClick={() => handleAddGroup(groupName, groupId)}>
+                                    Create new Group
+                                </button>
                             </div>
                         </div>
                     </main>
@@ -123,13 +189,20 @@ const Groups = () => {
                 </div>
             </div>
             <AddExpenseModal isVisible={showModal} onClose={() => setShowModal(false)} groupId={groupId} userId={userId} groupName={groupName}>
-                <AddExpense groupName={groupName} groupId={groupId} setShowModal={setShowModal} />
+                <AddSharedExpense groupName={groupName} groupId={groupId} setShowModal={setShowModal} />
             </AddExpenseModal>
-            <ShowExpenseModal isVisible={showAllExpensesModal} onClose={() => setShowAllExpensesModal(false)} groupId={groupId} userId={userId} groupName={groupName} />
+            <ShowGroupExpenseModal isVisible={showAllExpensesModal} onClose={() => setShowAllExpensesModal(false)} groupId={groupId} userId={userId} groupName={groupName} />
             <ShowGroupMembersModal isVisible={showGroupMembersModal} onClose={() => setShowGroupMembersModal(false)} groupId={groupId} groupName={groupName} />
+
+            <AddGroupModal isVisible={isAddGroupModalVisible} onClose={() => setAddGroupModalVisible(false)} userId={userId}>
+                <AddGroup userId={userId} onAddGroup={onAddGroup} />
+            </AddGroupModal>
+
             <FooterMenu />
         </div>
     );
 };
 
 export default Groups;
+
+

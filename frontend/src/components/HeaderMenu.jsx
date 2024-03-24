@@ -14,6 +14,11 @@ const HeaderMenu = () => {
               </Link>
             </li>
             <li>
+              <Link to="/friends" className="font-bold pl-2 hover:bg-gray-400 hover:p-2 hover:rounded-lg transition duration-300 ease-in-out">
+                Friends
+              </Link>
+            </li>
+            <li>
               <Link to="/groups" className="font-bold pl-2 hover:bg-gray-400 hover:p-2 hover:rounded-lg transition duration-300 ease-in-out">
                 Groups
               </Link>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ImBin2 } from "react-icons/im";
+import { FaTrash } from "react-icons/fa";
 
 const ShowSettledExpensesModal = ({ isVisible, onClose, userId, friendId, friendName }) => {
 
@@ -87,9 +87,14 @@ const ShowSettledExpensesModal = ({ isVisible, onClose, userId, friendId, friend
                                         <td className="border border-gray-300 px-4 py-2">{expense.categoryName}</td>
                                         <td className="border border-gray-300 px-4 py-2">{expense.description}</td>
                                         <td className="border border-gray-300 px-4 py-2">{expense.settledOn}</td>
-                                        <td>
+                                        {/* <td>
                                             <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteExpense(expense.id)}>
-                                                <ImBin2 />
+                                                <FaTrash />
+                                            </button>
+                                        </td> */}
+                                        <td>
+                                            <button onClick={() => handleDeleteExpense(expense.id)}>
+                                                <FaTrash />
                                             </button>
                                         </td>
                                     </tr>

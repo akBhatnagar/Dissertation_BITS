@@ -77,33 +77,67 @@ app.post('/addFriend', (req, res) => {
     const friendId = req.body.friendId;
 
     if (!userId || !friendId) {
-        return res.status(401).send({ error: "Missing data" })
+        return res.status(401).send({ message: "Missing data", result: "failure" })
     }
 
-    if (userId === friendId) {
-        return res.status(400).json({ error: 'You cannot add yourself as a friend.' });
+    if (userId == friendId) {
+        return res.status(400).json({ message: 'You cannot add yourself as a friend.', result: "failure" });
     }
 
-    const query = `INSERT INTO friends (userId, friendId) VALUES (?, ?)`;
-    db.run(query, [userId, friendId], function (err) {
+    // Check if friend already exists
+    const selectQuery = `SELECT id from friends where userId = ? and friendId = ?`;
+
+    db.get(selectQuery, [userId, friendId], (err, row) => {
         if (err) {
-            console.error('Error executing query: ' + err.message);
-            return res.status(500).send('Error adding friend');
+            console.error(err.message);
+            return res.status(500).json({ message: 'Internal Server Error', result: "failure" });
         }
-        return res.json({ status: 200, message: 'Friend added successfully' });
+        if (row) {
+            return res.status(400).json({ message: 'You are already friends', result: "failure" });
+        }
+
+        const query = `INSERT INTO friends (userId, friendId) VALUES (?, ?)`;
+        db.run(query, [userId, friendId], function (err) {
+            if (err) {
+                console.error('Error executing query: ' + err.message);
+                return res.status(500).send({ message: 'Error adding friend', result: 'failure' });
+            }
+            return res.json({ status: 200, message: 'Friend added successfully', result: 'success' });
+        });
     });
 });
 
 app.post('/removeFriend', (req, res) => {
     const { userId, friendId } = req.body;
 
-    const deleteQuery = `DELETE FROM friends WHERE userId = ? AND friendId = ?`;
-    db.run(deleteQuery, [userId, friendId], (err) => {
+    if (!userId || !friendId) {
+        return res.status(401).send({ message: "Missing data", result: "failure" })
+    }
+
+    if (userId == friendId) {
+        return res.status(400).json({ message: 'You cannot remove yourself.', result: "failure" });
+    }
+
+    // Check if friend already exists
+    const selectQuery = `SELECT id from friends where userId = ? and friendId = ?`;
+
+    db.get(selectQuery, [userId, friendId], (err, row) => {
         if (err) {
-            console.error('Error executing query: ' + err.message);
-            return res.status(500).send('Error removing friend');
+            console.error(err.message);
+            return res.status(500).json({ message: 'Internal Server Error', result: "failure" });
         }
-        return res.json({ message: 'Friend removed successfully' });
+        if (!row) {
+            return res.status(400).json({ message: 'You are not friends', result: "failure" });
+        }
+
+        const deleteQuery = `DELETE FROM friends WHERE userId = ? AND friendId = ?`;
+        db.run(deleteQuery, [userId, friendId], (err) => {
+            if (err) {
+                console.error('Error executing query: ' + err.message);
+                return res.status(500).send({ message: 'Error removing friend', result: 'failure' });
+            }
+            return res.json({ message: 'Friend removed successfully', result: 'success' });
+        });
     });
 });
 
@@ -205,17 +239,23 @@ app.post('/addCategory', (req, res) => {
 // Groups related APIs
 
 app.post('/addGroup', (req, res) => {
-    const { name, userIds } = req.body;
+    const { userId, groupName, members } = req.body;
+
+    if (!members.includes(userId)) {
+        members.push(userId);
+    }
+
+    let uniqueMembers = [...new Set(members)];
 
     const addGroupQuery = `INSERT INTO groups (name, userIds) VALUES (?, ?)`;
 
-    db.run(addGroupQuery, [name, userIds], function (err) {
+    db.run(addGroupQuery, [groupName, uniqueMembers.join(',')], function (err) {
         if (err) {
             console.error(err.message);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ message: 'Internal Server Error' });
         }
 
-        res.status(201).json({ message: 'Group added successfully', groupId: this.lastID });
+        res.status(200).json({ message: 'Group added successfully', groupId: this.lastID });
     });
 });
 
@@ -283,7 +323,6 @@ app.post('/groups/users', (req, res) => {
                 console.error(err.message);
                 return res.status(500).json({ error: 'Internal Server Error' });
             }
-
             res.json({ users: rows });
         });
     });
@@ -326,10 +365,10 @@ app.get('/getExpenseById', (req, res) => {
 });
 
 app.post('/addExpense', (req, res) => {
-    const { userId, friendId, categoryId, amount, description, date } = req.body;
+    const { userId, friendId, categoryId, amount, description, date, paidBy } = req.body;
 
-    const addExpenseQuery = 'INSERT INTO expenses (userId, friendId, categoryId, amount, description, date) VALUES (?, ?, ?, ?, ?, ?)';
-    db.run(addExpenseQuery, [userId, friendId, categoryId, amount, description, date], function (err) {
+    const addExpenseQuery = 'INSERT INTO expenses (userId, friendId, categoryId, amount, description, date, paidBy) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    db.run(addExpenseQuery, [userId, friendId, categoryId, amount, description, date, paidBy], function (err) {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -394,7 +433,7 @@ app.post('/getExpensesByFriend', (req, res) => {
     const friendId = req.body.friendId;
 
     const getExpenseByFriendIdQuery = `
-        SELECT expenses.id, expenses.userId, expenses.categoryId, expenses.friendId, expenses.amount, expenses.description, expenses.date, tags.name AS categoryName
+        SELECT expenses.id, expenses.userId, expenses.categoryId, expenses.friendId, expenses.amount, expenses.description, expenses.date, expenses.paidBy, tags.name AS categoryName
         FROM expenses
         JOIN tags ON expenses.categoryId = tags.id
         WHERE userId = ? AND friendId = ?`;
@@ -404,7 +443,6 @@ app.post('/getExpensesByFriend', (req, res) => {
             console.error(err.message);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
-
         res.json({ expenses: rows });
     });
 });
@@ -428,9 +466,10 @@ app.post('/getSharedExpenseById', (req, res) => {
 });
 
 app.post('/addSharedExpense', (req, res) => {
-    const { groupId, amount, description, date } = req.body;
-    const query = 'INSERT INTO shared_expenses (groupId, amount, description, date) VALUES (?, ?, ?, ?)';
-    db.run(query, [groupId, amount, description, date], function (err) {
+    console.log("Req body: " + req.body);
+    const { groupId, amount, description, date, categoryId, paidBy } = req.body;
+    const query = 'INSERT INTO shared_expenses (groupId, amount, description, date, categoryId, paidBy) VALUES (?, ?, ?, ?, ?, ?)';
+    db.run(query, [groupId, amount, description, date, categoryId, paidBy], function (err) {
         if (err) {
             console.error(err.message);
             return res.status(500).send({ error: 'Internal Server Error' });
@@ -484,15 +523,21 @@ app.post('/getSharedExpensesByDate', (req, res) => {
 
 app.post('/getSharedExpensesByGroupId', (req, res) => {
     const groupId = req.body.groupId;
-    const query = 'SELECT * FROM shared_expenses WHERE groupId = ?';
+    const query = `
+        SELECT e.id, e.groupId, e.amount, e.description, e.date, t.name as categoryName, u.name as paidByName
+        FROM shared_expenses e
+        JOIN users u ON e.paidBy = u.id
+        JOIN tags t ON e.categoryId = t.id
+        WHERE e.groupId = ?`;
     db.all(query, [groupId], (err, rows) => {
         if (err) {
             console.error(err.message);
             return res.status(500).send({ error: 'Internal Server Error' });
         }
-        res.send(rows);
+        res.send({ expenses: rows });
     });
 });
+
 
 // Settled expenses related APIs
 
@@ -578,6 +623,18 @@ app.post('/deleteSettledExpense', (req, res) => {
         }
 
         res.json({ message: 'Settled expense deleted successfully' });
+    });
+});
+
+app.get('/getAllUsers', (req, res) => {
+
+    const getAllUsersQuery = 'SELECT id, name, email FROM users';
+    db.all(getAllUsersQuery, [], (err, rows) => {
+        if (err) {
+            console.error('Error executing query: ' + err.message);
+            return res.status(500).send('Error fetching users');
+        }
+        res.json(rows);
     });
 });
 

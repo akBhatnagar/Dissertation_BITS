@@ -46,6 +46,7 @@ const App = () => {
         <Route path={constants.aboutUrl} element={<About />} />
         <Route path={constants.contactUrl} element={<Contact />} />
         <Route path={constants.getGroupsUrl} element={<Groups />} />
+        <Route path={constants.friendsUrl} element={<Dashboard />} />
         {/* Add more routes for other pages */}
         <Route path="*" element={<NotFound />} />
       </Routes>
