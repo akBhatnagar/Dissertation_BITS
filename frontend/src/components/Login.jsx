@@ -17,7 +17,7 @@ export default function Login() {
 
     async function loginUser(credentials) {
 
-        return fetch(constants.baseUrl + '/login/v1', {
+        return fetch(constants.baseUrl + '/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
