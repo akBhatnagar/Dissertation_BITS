@@ -1,6 +1,7 @@
 import { Toast } from 'bootstrap';
 import React, { useState } from 'react';
 
+const constants = require('../utils/Constants');
 
 function FeedbackForm() {
     const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ function FeedbackForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('http://localhost:8080/addFeedback', {
+        fetch(constants.baseUrl + '/addFeedback', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

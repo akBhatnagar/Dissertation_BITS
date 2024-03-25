@@ -1,1 +1,3 @@
-export const dbPath = "../database/EMS_DB";
+const dbPath = "../database/EMS_DB";
+
+module.exports = { dbPath };

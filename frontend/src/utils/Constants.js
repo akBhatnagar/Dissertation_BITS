@@ -36,5 +36,3 @@ export const dashboardUrl = "/dashboard";
 export const aboutUrl = "/about";
 export const contactUrl = "/contact";
 export const friendsUrl = "/friends";
-
-

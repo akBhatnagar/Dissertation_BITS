@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
+const constants = require('../../utils/Constants');
+
 const ShowGroupMembersModal = ({ isVisible, onClose, groupId, groupName }) => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
         const fetchGroupMembers = async () => {
             try {
-                const response = await fetch('http://localhost:8080/groups/users', {
+                const response = await fetch(constants.baseUrl + '/groups/users', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

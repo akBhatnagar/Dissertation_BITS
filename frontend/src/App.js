@@ -19,7 +19,7 @@ import Dashboard from './components/Dashboard';
 import About from './components/About';
 import Contact from './components/Contact';
 import Groups from './components/Groups';
-
+import Friends from './components/Friends';
 
 const constants = require('./utils/Constants');
 
@@ -46,7 +46,7 @@ const App = () => {
         <Route path={constants.aboutUrl} element={<About />} />
         <Route path={constants.contactUrl} element={<Contact />} />
         <Route path={constants.getGroupsUrl} element={<Groups />} />
-        <Route path={constants.friendsUrl} element={<Dashboard />} />
+        <Route path={constants.friendsUrl} element={<Friends />} />
         {/* Add more routes for other pages */}
         <Route path="*" element={<NotFound />} />
       </Routes>
