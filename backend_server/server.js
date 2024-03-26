@@ -424,6 +424,23 @@ app.get('/getExpenseById', (req, res) => {
     });
 });
 
+app.post('/getAllExpensesForUser', (req, res) => {
+    logger.info("Received request for getting all expenses for the user");
+    const userId = req.body.userId;
+
+    const getExpenseQuery = 'SELECT * FROM expenses WHERE userId = ?';
+    logger.info("Fetching the expenses details from id");
+    db.all(getExpenseQuery, [userId], (err, rows) => {
+        if (err) {
+            logger.error(err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        logger.info("Expense fetched successfully, sending response");
+        res.json({ expenses: rows });
+    });
+});
+
 app.post('/addExpense', (req, res) => {
     logger.info("Received request for adding expense");
     const { userId, friendId, categoryId, amount, description, date, paidBy } = req.body;
