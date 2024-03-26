@@ -3,6 +3,7 @@ import Chart from 'chart.js/auto';
 import HeaderMenu from './HeaderMenu';
 import FooterMenu from './FooterMenu';
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const constants = require('../utils/Constants');
 
@@ -11,10 +12,16 @@ const Dashboard = () => {
     const barChartRef = useRef(null);
     const [friends, setFriends] = useState([]);
     const [expenses, setExpenses] = useState([]);
-    const [daysSinceLastSpend, setDaysSinceLastSpend] = useState(null);
+    const navigate = useNavigate(); // Get navigate object
 
     const userId = localStorage.getItem('id');
     const userName = localStorage.getItem('name');
+
+    useEffect(() => {
+        if (!userId) {
+            navigate('/'); // Redirect to home page if userId is not present
+        }
+    }, [userId, navigate]);
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -53,24 +60,6 @@ const Dashboard = () => {
                 const data = await response.json();
                 setExpenses(data.expenses);
 
-                const expenses = data.expenses
-                console.log(expenses);
-
-                let latestDate = new Date(expenses[0].date).getDate();
-                expenses.forEach(expense => {
-                    const currExpenseDate = new Date(expense).getDate();
-                    latestDate = currExpenseDate > latestDate ? currExpenseDate : latestDate;
-                });
-
-                // Calculate days since last spend
-                // const latestDate1 = data.expenses.reduce((latest, expense) => {
-                //     const expenseDate = new Date(expense.date);
-                //     return expenseDate > latest ? expenseDate : latest;
-                // }, new Date(0));
-                const today = new Date().getDate();
-                const diffDays = (today - latestDate);
-
-                setDaysSinceLastSpend(diffDays);
             } catch (error) {
                 console.error("Error: ", error)
             }
@@ -189,15 +178,16 @@ const Dashboard = () => {
     };
 
     return (
-        <React.Fragment>
+
+        < React.Fragment >
             <HeaderMenu />
             <div className="container mx-auto my-auto px-4 py-8 ">
                 <h1 className="text-2xl font-bold mb-4 pt-16">Dashboard</h1>
-                <div className="flex">
-                    <div className="w-1/2 ">
+                <div className="flex h-auto w-auto">
+                    <div className="flex-col w-2/3 ">
                         <canvas ref={pieChartRef}></canvas>
                     </div>
-                    <div className="w-1/2">
+                    <div className="w-1/3">
                         <canvas ref={barChartRef}></canvas>
                     </div>
                 </div>
@@ -208,7 +198,7 @@ const Dashboard = () => {
                 </div>
             </div>
             <FooterMenu />
-        </React.Fragment>
+        </React.Fragment >
     );
 };
 

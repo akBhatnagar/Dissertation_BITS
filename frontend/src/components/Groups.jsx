@@ -9,6 +9,7 @@ import ShowGroupMembersModal from './Modals/ShowGroupMembersModal';
 import { FaTrash } from 'react-icons/fa';
 import AddGroupModal from './Modals/AddGroupModal';
 import AddGroup from './AddGroup';
+import { useNavigate } from 'react-router-dom';
 
 const constants = require('../utils/Constants');
 
@@ -27,7 +28,13 @@ const Groups = () => {
     const [informationMessage, setInformationMessage] = useState('');
     const [newGroupId, setNewGroupId] = useState('');
     const [newGroupName, setNewGroupName] = useState('');
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!userId) {
+            navigate('/'); // Redirect to home page if userId is not present
+        }
+    }, [userId, navigate]);
 
     useEffect(() => {
         const fetchData = async () => {

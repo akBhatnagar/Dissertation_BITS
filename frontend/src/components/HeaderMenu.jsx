@@ -2,6 +2,11 @@ import { React } from 'react';
 import { Link } from 'react-router-dom'
 import 'tailwindcss/tailwind.css';
 
+const handleSignout = () => {
+  localStorage.clear();
+  window.location.reload();
+};
+
 const HeaderMenu = () => {
   return (
     <div className="bg-gray-300 z-50 fixed top-0 left-0 right-0 bg-opacity-40">
@@ -41,7 +46,8 @@ const HeaderMenu = () => {
           </ul>
         </div>
         <div className="flex items-center">
-          <button className="bg-gray-800 text-white px-4 py-2 ml-4 rounded-lg hover:bg-gray-700 transition duration-300" >
+          <button className="bg-gray-800 text-white px-4 py-2 ml-4 rounded-lg hover:bg-gray-700 transition duration-300"
+            onClick={handleSignout}>
             Sign out
           </button>
         </div>

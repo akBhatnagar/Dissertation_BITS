@@ -4,7 +4,7 @@ import { FaGoogle } from "react-icons/fa";
 import bgImage from '../assets/images/bg-image.jpg';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import Dashboard from './Dashboard';
+import { useEffect } from 'react';
 
 const constants = require('../utils/Constants');
 
@@ -14,6 +14,14 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState("");
+    const userId = localStorage.getItem('id');
+
+    useEffect(() => {
+        if (userId) {
+            navigate('/dashboard'); // Redirect to home page if userId is not present
+        }
+    }, [userId, navigate]);
+
 
     async function loginUser(credentials) {
 

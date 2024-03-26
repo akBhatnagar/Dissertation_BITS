@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
-import Home from './components/Home';
 import GetAllUsers from './components/GetAllUsers';
 import AddUser from './components/AddUser';
 import DeleteUser from './components/DeleteUser';
@@ -20,6 +19,7 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Groups from './components/Groups';
 import Friends from './components/Friends';
+import Signup from './components/Signup';
 
 const constants = require('./utils/Constants');
 
@@ -29,7 +29,7 @@ const App = () => {
       <Routes>
         <Route index element={<Login />} />
         <Route path={constants.loginUrl} element={<Login />} />
-        <Route path={constants.signupUrl} element={<Home />} />
+        <Route path={constants.signupUrl} element={<Signup />} />
         <Route path={constants.dashboardUrl} element={<Dashboard />} />
         <Route path={constants.getFriendsUrl} element={<GetAllUsers />} />
         <Route path={constants.addFriendUrl} element={<AddUser />} />
