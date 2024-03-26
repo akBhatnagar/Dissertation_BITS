@@ -10,6 +10,7 @@ import AddFriendModal from './Modals/AddFriendModal';
 import AddFriend from './AddFriend';
 import InformationBox from './InformationBox';
 import { FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const constants = require('../utils/Constants');
 
@@ -28,6 +29,14 @@ const Friends = () => {
     const [newFriendName, setNewFriendName] = useState('');
     const [showInformation, setShowInformation] = useState(false);
     const [informationMessage, setInformationMessage] = useState('');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!userId) {
+            navigate('/'); // Redirect to home page if userId is not present
+        }
+    }, [userId, navigate]);
 
     useEffect(() => {
         const fetchData = async () => {

@@ -30,6 +30,7 @@ app.post('/signup', (req, res) => {
             logger.error(err.message);
         } else {
             logger.info(`A row has been inserted with rowId ${this.lastID}`);
+            return res.send({ status: 200, message: `User has been signed up with id ${this.lastID}` });
         }
     });
 });
