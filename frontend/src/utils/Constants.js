@@ -3,7 +3,8 @@ export const twitterUrl = "https://twitter.com/coder_akshay";
 export const gmailUrl = "mailTo:akshaybhatnagar1998@gmail.com";
 export const linkedinUrl = "https://www.linkedin.com/in/akshay-bhatnagar-3982a410b/";
 
-export const baseUrl = "http://54.177.1.149:8080";
+// export const baseUrl = "http://54.177.1.149:8080";
+export const baseUrl = "http://localhost:8080";
 export const indexUrl = "/";
 export const loginUrl = "/login";
 export const signupUrl = "/signup";
