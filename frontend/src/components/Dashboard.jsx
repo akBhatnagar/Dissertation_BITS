@@ -116,7 +116,7 @@ const Dashboard = () => {
             data: pieData,
             options: {
                 aspectRatio: 1, // Maintain a square aspect ratio
-                responsive: false, // Disable responsiveness
+                responsive: true, // Disable responsiveness
                 plugins: {
                     legend: {
                         position: 'left', // Position legend above the chart
@@ -165,8 +165,9 @@ const Dashboard = () => {
             }, 0);
 
             const daysBetween = Math.ceil(Math.abs(new Date() - latestExpenseDate) / (1000 * 60 * 60 * 24));
-
-            wsData.push([friend.name, totalExpense, daysBetween]);
+            if (totalExpense > 0) {
+                wsData.push([friend.name, totalExpense, daysBetween]);
+            }
         });
 
         const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -184,10 +185,10 @@ const Dashboard = () => {
             <div className="container mx-auto my-auto px-4 py-8 ">
                 <h1 className="text-2xl font-bold mb-4 pt-16">Dashboard</h1>
                 <div className="flex h-auto w-auto">
-                    <div className="flex-col w-2/3 ">
+                    <div className="flex-col w-1/2 ">
                         <canvas ref={pieChartRef}></canvas>
                     </div>
-                    <div className="w-1/3">
+                    <div className="w-1/2">
                         <canvas ref={barChartRef}></canvas>
                     </div>
                 </div>
